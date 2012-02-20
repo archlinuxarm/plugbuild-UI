@@ -51,7 +51,7 @@ html, body {
 }
 
 #loading-indicator {
-  background: url(/spin.gif) no-repeat;
+  background: url(spin.gif) no-repeat;
   
   margin:     0;
   height:128px;

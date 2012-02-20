@@ -38,7 +38,7 @@ var PlugBuildApp = Ext.application({
 function go() {
     console.log("executing api request");
     Ext.Ajax.request({
-        url: 'api/packages.json',
+        url: 'data/packages.json',
         success: function(response){
             var text = response.responseText;
             var packageListObject = Ext.JSON.decode(text);
