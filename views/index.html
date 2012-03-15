@@ -2,7 +2,7 @@
     <head>
         <meta charset="utf-8">
         <title>PlugBuild</title>
-        <link rel="stylesheet" href="style.css" media="screen">
+        <link rel="stylesheet" href="/static/style.css" media="screen">
         <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.2a/resources/css/ext-all.css" />
 
  
@@ -32,9 +32,17 @@
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        
         <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.2a/ext-all.js"></script>
-        <script src="app.js"></script>  
+        <script src="/static/app.js"></script>  
+		<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js"
+			data-dojo-config="async: true, parseOnLoad: true"> </script>
+		<script>
+			// Load the editor resource
+				require(["dojox/socket", "dojox/socket/Reconnect", "dojo/domReady!"],function() {
+					openConnection();
+				});
+		</script>
+
         
     </body>
 

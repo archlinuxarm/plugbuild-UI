@@ -16,14 +16,16 @@ Ext.require([
 ]);  
 
 
+
 var PackageStore;
+
 var socket;
 var testData = [];
 
 var PlugBuildApp = Ext.application({
     name: 'PlugBuild',
 
-    appFolder: 'PlugBuild',
+    appFolder: '/static/PlugBuild',
     controllers: [
         'Packages'
     ],
@@ -38,7 +40,7 @@ var PlugBuildApp = Ext.application({
 function go() {
     console.log("executing api request");
     Ext.Ajax.request({
-        url: 'data/packages.json',
+        url: '/static/data/packages.json',
         success: function(response){
             var text = response.responseText;
             var packageListObject = Ext.JSON.decode(text);
@@ -104,28 +106,40 @@ function plugBuildInit() {
     PackageStore.cacheRecords(records);
 
     PackageStore.guaranteeRange(0, 49);
-    
+
 }
 
+function pingSocket() {
+	socket.send(dojo.toJson({ command: "hello" }));
+}
 
 function openConnection() {
-    /*socket = dojox.socket({
-                              url:":8080/",
-                              headers: {
-                              "Accept": "application/json",
-                              "Content-Type": "application/json"
-    }});
+    var socket = dojox.socket({
+		url:"ws://localhost:8080",
+		headers: {
+			"Accept": "application/json",
+			"Content-Type": "application/json"
+		}
+	});
     
-    //socket = dojox.socket.Reconnect(socket);
-    socket.on("open", function(event){
-        //socket.send("hi server");
+    socket = dojox.socket.Reconnect(socket);
+    socket.on("open", function(event) {
+        console.log("opened socket");
+		setTimeout( pingSocket, 5000);
     });
     
     socket.on("message", function(event){
-        var existingId = event.data.id;
-        var object = event.data.object;
-        dstore.notify(object, existingId);
-    });*/
+        console.log("Message from server: " + event.data);
+        if (event.data.command == "hello") {
+			console.log("Got hello from server");
+            socket.send(dojo.toJson({ response: "hello" }));
+        }
+        else if (even.data.command == "update") {
+            var existingId = event.data.id;
+            var object = event.data.object;
+            dstore.notify(object, existingId);
+        }
+    });
 }
 
 function closeConnection() {
