@@ -44,7 +44,7 @@ function go() {
         success: function(response){
             var text = response.responseText;
             var packageListObject = Ext.JSON.decode(text);
-            console.dir(packageListObject);
+            //console.dir(packageListObject);
             for ( var key in packageListObject) {
                 var npackage = packageListObject[key];
                 testData.push(npackage);
@@ -106,39 +106,25 @@ function plugBuildInit() {
     PackageStore.cacheRecords(records);
 
     PackageStore.guaranteeRange(0, 49);
-
 }
 
 function pingSocket() {
-	socket.send(dojo.toJson({ command: "hello" }));
+	socket.send(JSON.stringify({ command: "echo", stuff: "dont use the word polish, just say crimsonred, mkay?"}));
 }
 
-function openConnection() {
-    var socket = dojox.socket({
-		url:"ws://localhost:8080",
-		headers: {
-			"Accept": "application/json",
-			"Content-Type": "application/json"
-		}
-	});
-    
-    socket = dojox.socket.Reconnect(socket);
-    socket.on("open", function(event) {
-        console.log("opened socket");
-		setTimeout( pingSocket, 5000);
+function openConnection() { 
+    feed = io.connect('https://archlinuxarm.org:7050', {secure: true});
+    feed.on('connect', function () {
+        console.log('socket.io connected');
+        feed.emit('hi!');
     });
-    
-    socket.on("message", function(event){
-        console.log("Message from server: " + event.data);
-        if (event.data.command == "hello") {
-			console.log("Got hello from server");
-            socket.send(dojo.toJson({ response: "hello" }));
-        }
-        else if (even.data.command == "update") {
-            var existingId = event.data.id;
-            var object = event.data.object;
-            dstore.notify(object, existingId);
-        }
+    feed.on('echo',function(data){ 
+        console.log("opened socket");
+        console.log(data);
+        feed.emit('echo',{stuff:'client'});
+    });
+    feed.on('disconnect',function(){
+        console.log('socket.io closed');
     });
 }
 

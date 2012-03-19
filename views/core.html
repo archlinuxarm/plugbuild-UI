@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+	<!-- Basic Page Needs
+  	================================================== -->
+
+	<title>PlugBuild</title>
+
+	<meta charset="utf-8">
+	<meta name="description" content="">
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="author" content="Arch Linux ARM">
+
+	<!--[if lt IE 9]>
+		<script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Mobile Specific Metas
+  	================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+	<!-- CSS
+  	================================================== -->
+
+	<link rel="stylesheet" href="/static/stylesheets/base.css">
+	<link rel="stylesheet" href="/static/stylesheets/skeleton.css">
+	<link rel="stylesheet" href="/static/stylesheets/layout.css">
+	
+	<link rel="stylesheet" href="/static/stylesheets/plugbuild.css">	
+	
+	<script src="/static/javascripts/jquery-1.7.1.js"></script>
+	<script src="/static/javascripts/jquery.sparkline.min.js"></script>
+	<script src="/static/javascripts/jquery.jqplot.min.js"></script>
+	<script src="/static/javascripts/jqplot.pieRenderer.js"></script>
+	<script src="/static/javascripts/socket.io.js"></script>
+
+
+	<script src="/static/javascripts/underscore-min.js"></script>
+    <script src="/static/javascripts/backbone-min.js"></script>
+	<script src="/static/javascripts/plugbuild.js"></script>
+	
+	
+	<!-- Load all the backbone views, collections, models and the main router -->
+	
+	<script src="/static/app/AdminBar.js"> </script>
+
+	<script src="/static/app/DashboardView.js"> </script>
+
+	<script src="/static/app/PackagesView.js"> </script>
+	<script src="/static/app/Packages.js"> </script>
+	
+	<script src="/static/app/ConsoleView.js"> </script>
+	<script src="/static/app/ConsoleMessages.js"> </script>
+
+	<script src="/static/app/BuilderView.js"> </script>
+	<script src="/static/app/Builders.js"> </script>
+
+
+	<script src="/static/app/SettingsView.js"> </script>
+	<script src="/static/app/StatusView.js"> </script>
+	
+	<script src="/static/app/PlugBuild.js"> </script>
+
+	<!-- this is the entry point for the backbone app -->
+	<script src="/static/app/main.js"></script>
+	
+	
+	
+</head>
+<body>
+
+
+	<div id="adminbar" class="top ui-panel">    </div>
+
+	<div id="content_area" id="container" class="container">   </div><!-- container -->
+
+	<div id="console" class="">    </div>
+	
+	<!-- templates -->
+	
+	<script type="text/template" id="console-template">
+
+		<div id="toolbar"></div>
+		
+		<div id="display"></div>
+			
+	</script>
+	
+	
+	<script type="text/template" id="adminbar-template">
+
+			<li id="logo-button" class="first adminbutton">
+				<a href="">
+					<img id="logo" src="/static/images/alarm.png"/>
+				</a>
+			</li>
+					
+			<li id="dashboard-button" class="adminbutton">
+				<a href="/#/dashboard">
+					<span id="dashboard-icon">Dashboard</span>
+				</a>
+			</li>
+
+			<li id="packages-button" class="adminbutton">
+				<a href="/#/packages">
+					<span id="packages-icon">Packages</span>
+				</a>
+			</li>
+			<li id="settings-button" class="adminbutton">
+				<a href="/#/settings">
+					<span id="settings-icon">Settings</span>
+				</a>
+			</li>
+			
+			<li class="adminbutton last">
+				<a href="javascript:">
+					<span id="username-field"></span>
+				</a>
+				
+			</li>
+			
+	</script>
+    
+	<script type="text/template" id="builder-template">
+		<h5>Builders</h5>
+		<div class="etch"></div>
+		<ul id="builder-list"></ul> 
+	
+	</script>
+	
+	<script type="text/template" id="status-template">
+		<h5>Status</h5>
+		<div class="etch"></div>
+		<div class="stat-list">Load:<span class="value" id="loadavg"></span></div>
+		<div class="stat-list">RAM used:<span class="value" id="memused"></span></div>
+	
+	</script>
+		
+	<script type="text/template" id="packages-template">
+		<div class="two-thirds column statusbox">
+			<h5 style="display:inline-block;">Packages</h5>
+			<div id="package-controls">
+				<span id="previous-button">⬇</span>
+				<span id="current-index"></span>
+				<span id="next-button">⬆</span>
+			</div>
+			<div class="etch"></div>
+			<ul id="package-list"></ul>
+		</div>
+		<div class="one-third column statusbox">
+			<h5>Status</h5>
+			<div class="etch"></div>
+			<div>Total: <span id="number-all-packages"></span></div>
+			<div>Waiting: <span id="number-waiting-packages"></span></div>
+			<div>Failed: <span id="number-failed-available"></span></div>
+			
+		</div>
+	</script>
+	
+	<script type="text/template" id="settings-template">
+		<div class="two-thirds column statusbox">
+			<h5>Global Settings</h5>
+			<div class="etch"></div>
+			<span id="settingserror"></span>
+		</div>
+
+	</script>
+
+</body>
+</html>

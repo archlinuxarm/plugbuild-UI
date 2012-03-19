@@ -32,18 +32,17 @@
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.2a/ext-all.js"></script>
-        <script src="/static/app.js"></script>  
-		<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js"
-			data-dojo-config="async: true, parseOnLoad: true"> </script>
-		<script>
-			// Load the editor resource
-				require(["dojox/socket", "dojox/socket/Reconnect", "dojo/domReady!"],function() {
-					openConnection();
-				});
-		</script>
 
-        
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.2a/ext-all.js"></script>
+        <script type="text/javascript" src="/static/socket.io.js"></script>
+        <script src="/static/app.js"></script>  
+        <script>
+        $(document).ready(function () {
+            openConnection();
+        });
+        </script>
+   
     </body>
 
 
