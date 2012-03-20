@@ -18,7 +18,6 @@
 		},
     
 		render: function() {
-			console.log('Render dashboard');
 			$(this.el).empty();
 			$(this.el).append($(this.statusView.render().el));
 			$(this.el).append($(this.builderView.render().el));

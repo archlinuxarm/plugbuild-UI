@@ -16,23 +16,28 @@
 			this.dashboardView	= new DashboardView();
 			this.settingsView	= new SettingsView();
 			this.packagesView	= new PackagesView();
-			this.adminBar		= new AdminBar();
-			this.consoleView    = new ConsoleView();
 			
+
+			this.adminBar		= new AdminBar();
 			var $adminBarContainer = $('#adminbar');
 			$adminBarContainer.append(this.adminBar.render().el);
 			
+			
+			this.consoleView    = new ConsoleView();
+			var $consoleContainer = $('#console_container');
+			$consoleContainer.append(this.consoleView.render().el);			
+
 			var lthis = this;
 			// done with setup of backbone stuff so we can setup the websocket now
 		    this.socket = io.connect('https://archlinuxarm.org:7050', {secure: true});
     		this.socket.on('connect', function () {
-        		console.log('socket.io connected');
+        		dispatcher.trigger('console:message', { consoleline: '[Socket] Connected' });
     		});
 			this.socket.on('disconnect',function(){
-        		console.log('socket.io closed');
+        		dispatcher.trigger('console:message', { consoleline: '[Socket] Closed' });
     		});
      		this.socket.on('init',function(data) { 
-        		console.log("Received initialization data from builder");
+        		dispatcher.trigger('console:message', { consoleline: "[Init] Received initial package and builder state snapshots" });
         		
         		//grab the username out of the response and ship it around
         		var user = data.user;
@@ -43,9 +48,7 @@
 				var builder_snapshot = [];
 				
 				for (var key in data.builders) {
-					
         	        var nbuilder = data.builders[key];
-        	        console.log('Processing builder: ' + nbuilder.fqn);
             	    builder_snapshot.push(nbuilder);				
 				}
 				dispatcher.trigger('builder:snapshot', builder_snapshot);
@@ -64,19 +67,18 @@
         		lthis.navigate("/#/dashboard", {trigger: true});
     		});
     		this.socket.on('package',function(data){
-        		console.log('Package update: ' + data.package);
+        		dispatcher.trigger('console:message', { consoleline: '[Update] ' + data.package });
         		dispatcher.trigger('package:update', data);
     		});
     		this.socket.on('builder',function(data){
-        		console.log('Builder: ' + data.fqn + ', state: ' + data.state);
+        		dispatcher.trigger('console:message', { consoleline: '[Builder] ' + data.fqn + ', state: ' + data.state });
         		dispatcher.trigger('builder:state', data);
     		});
     		this.socket.on('console',function(data){
-        		console.log('Console line: ' + data.consoleline);
+        		console.log('[Console] ' + data.consoleline);
         		dispatcher.trigger('console:message', data);
     		});
     		this.socket.on('status', function(data) {
-         		console.log('Status heartbeat: ' + data);
         		dispatcher.trigger('status:system', data);   		
     		});
 		},

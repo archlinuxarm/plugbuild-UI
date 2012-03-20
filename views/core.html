@@ -75,20 +75,43 @@
 </head>
 <body>
 
+<div id="wrap">
 
 	<div id="adminbar" class="top ui-panel">    </div>
 
-	<div id="content_area" id="container" class="container">   </div><!-- container -->
+	<div id="content_area" class="container">   </div><!-- container -->
 
-	<div id="console" class="">    </div>
+</div><!-- this is here to enable the console to stay at the bottom without doing margin tricks -->
+
+	<div id="console_container" class="">    </div>
 	
 	<!-- templates -->
 	
 	<script type="text/template" id="console-template">
 
-		<div id="toolbar"></div>
+		<ul id="toolbar" class="gradient"> 
+
+			<li id="console-button" class="first adminbutton">
+				<a href="">
+					<img id="logo" src="/static/images/console.png"/>
+				</a>
+			</li>
+
+			
+			<li class="adminbutton last">
+				<a href="">
+					<span>⬆</span>
+				</a>
+				
+			</li>		
 		
-		<div id="display"></div>
+		</ul>
+		
+		<div id="display">
+			<ul id="console-list">
+			
+			</ul>
+		</div>
 			
 	</script>
 	

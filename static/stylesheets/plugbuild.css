@@ -31,13 +31,22 @@ body {
 
 }
 
+html, body {height: 100%;}
 
-#console {
-	position:absolute;
-	bottom:0px;
-	left:0px;
-	right:0px;
-	height:42px;
+#wrap {min-height: 100%;}
+
+#content_area {
+	overflow:auto;
+	padding-bottom: 242px;
+} 
+
+
+#console_container {
+	position: relative;
+	margin-top: -242px; /* negative value of footer height */
+	height: 242px;
+	clear:both;
+	background:green;
 	overflow:hidden;
 
 }
@@ -50,13 +59,21 @@ body {
 
 #console #display {
 	background:#000;
-	min-height:200px;
+	height:200px;
+	overflow-x:hidden;
+	overflow-y:scroll;
+	padding-top:6px;
+	padding-bottom:6px;
+	padding-left:6px;
+	padding-right:6px;
 	
 }
 
 
 #console #display ul li {
 	list-style:none;
+	color:#fff;
+	text-shadow:0 1px 0 #666;
 }
 
 
@@ -64,14 +81,8 @@ body {
 	position: initial;
 }
 
-
-#content_area {
-	padding-bottom:48px;
-	
-}
-
 #package-list {
-	max-height:500px;
+	max-height:400px;
 	min-height:150px;
 	height:auto;
 	overflow-y:scroll;
@@ -129,7 +140,7 @@ body {
 }
 
 
-.ui-panel ul.gradient  {
+ul.gradient  {
     margin:0;
 	padding-left:0px;
 	padding-right:0px;
@@ -142,7 +153,7 @@ body {
 }
 
 
-.ui-panel ul.gradient li {
+ul.gradient li {
     float:left;
     height:42px;
 	
@@ -154,49 +165,49 @@ body {
 }
 
 
-.ui-panel ul.gradient li.last {
+ul.gradient li.last {
 	float:right;
 	padding-right:12px;
 }
 
-.ui-panel ul.gradient li#logo {
+ul.gradient li#logo {
 	width: auto;
 	padding-left: 12px;
 	padding-right: 12px;
 	font-weight:bold;
 }
 
-.ui-panel ul.gradient li#logo-button img {
+ul.gradient li#logo-button img {
 	width:auto;
 	height:38px;
 	padding-top:2px;
 	padding-bottom:2px;
 }
 
-.ui-panel ul.gradient li.selected {
+ul.gradient li.selected {
 	color:#eaeaea;
 }
 
-.ui-panel ul.gradient li.adminbutton {
+ul.gradient li.adminbutton {
 	cursor:pointer;
 }
 
-.ui-panel ul.gradient li.last {
+ul.gradient li.last {
 
 
 }
 
-.ui-panel ul.gradient li:active {
+ul.gradient li:active {
 
 
 }
 
-.ui-panel ul.gradient li.selected a span {
+ul.gradient li.selected a span {
 	color:#7EB6FF;
 }
 
-.ui-panel ul.gradient li a,
-.ui-panel ul.gradient li a:visited {
+ul.gradient li a,
+ul.gradient li a:visited {
     
     height:100%;
     width:100%;
@@ -206,11 +217,12 @@ body {
 	cursor:default
 }
 
-.ui-panel ul.gradient li a:hover {
+ul.gradient li a:hover {
     color:#7EB6FF;
     
 }
-.ui-panel ul.gradient li a span {
+
+ul.gradient li a span {
     font-size:1.0em;
     font-weight:bold;
 	height:42px;
