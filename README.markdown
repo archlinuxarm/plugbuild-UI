@@ -25,4 +25,3 @@ Backbone.js application
     ★  Central dispatcher used for in-process notifications keeps views cleanly separate (pushing/listening vs calling functions/setting properties)    
     ★  Little statically rendered html, mostly managed by backbone views
     ★  Console display for builder messages (and CLI commands soon)
-    
