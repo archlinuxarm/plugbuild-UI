@@ -57,28 +57,28 @@ body {
 }
 
 #app {
-display: -webkit-box;
-display: -moz-box;
--webkit-box-orient: vertical;
--moz-box-orient: vertical;
-min-width: 0px;
-min-height: 0px;
-max-width: 10000px;
-max-height: 10000px;
-padding: 0px;
--webkit-box-pack: start;
--webkit-box-align: stretch;
-position: absolute;
-left: 0px;
-right: 0px;
-top: 0px;
-bottom: 0px;
+	display: -webkit-box;
+	display: -moz-box;
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+	min-width: 0px;
+	min-height: 0px;
+	max-width: 10000px;
+	max-height: 10000px;
+	padding: 0px;
+	-webkit-box-pack: start;
+	-webkit-box-align: stretch;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
 }
 
 #adminbar.top {
 	box-sizing: border-box;
 	-moz-box-flex: 0;        
-    -webkit-box-flex: 0; 
+	-webkit-box-flex: 0; 
 }
 
 
@@ -186,9 +186,9 @@ bottom: 0px;
 	height:20px;
 	margin-top:6px;
 	margin-bottom:0px;
-    border:none;
+	border:none;
     
-    outline: none;
+	outline: none;
 	position:relative;
 
 	-webkit-border-radius: 8px;
@@ -199,7 +199,7 @@ bottom: 0px;
 	word-wrap: break-word;
 	
 	
-    background:#FCFCFC;
+    	background:#FCFCFC;
 	
 
 	color: #333;
@@ -242,8 +242,6 @@ bottom: 0px;
 	
 	overflow-x:hidden;
 	overflow-y:scroll;
-
-	
 }
 
 #console #console-display #console-list {

@@ -13,28 +13,28 @@
 			this.collection.reset();
 			
 			var lthis = this;
-			
+
 			dispatcher.on('console:message',function(message) {
 				console.log('Console view got message');
 				lthis.collection.create(message);
       			
-      			var li = document.createElement('li');
+      				var li = document.createElement('li');
 				li.setAttribute('class','console-line');
 				
 				var message = document.createTextNode(message.consoleline);
 				li.appendChild(message);
 		
       		
-      			lthis.$('#console-list').append(li);
-      			lthis.$('#console-display').prop({ scrollTop: lthis.$('#console-display').prop("scrollHeight") });
+      				lthis.$('#console-list').append(li);
+	      			lthis.$('#console-display').prop({ scrollTop: lthis.$('#console-display').prop("scrollHeight") });
 			});
 		},
 		events: {
-            "click #reveal-button": "reveal"
-        },
-        nop: {
-        	//
-        },
+            		"click #reveal-button": "reveal"
+        	},
+        	nop: {
+        		//
+        	},
 		reveal: function () {
 			console.log("swap");
 			//this.$('#reveal-button').css({ WebkitTransform: 'rotate(' + 180 + 'deg)'});
