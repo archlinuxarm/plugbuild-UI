@@ -6,7 +6,7 @@
 (function($) {
 	window.PackagesView = Backbone.View.extend({
 		tagName: 'div',
-    
+    	id:		'package-wrap',
 		initialize: function() {
 			_.bindAll(this, 'render');
 			this.template = _.template($('#packages-template').html());
@@ -24,14 +24,15 @@
 			dispatcher.on('package:snapshot',function(snapshot) {
 				console.log('Package view got snapshot');
 				lthis.collection.reset(snapshot);
+				lthis.render();
 			});
 			dispatcher.on('package:update',function(package) {
 				console.log('Package view got update');
-				model = lthis.get(package['package']);
+				model = lthis.collection.get(package['package']);
 				if (model) {
 					lthis.collection.remove(model);
     			}
-				lthis.create(package);
+				lthis.collection.create(package);
 				lthis.render();
 			});			
 
@@ -69,22 +70,20 @@
 				lthis.currentScrollTop = lthis.$("#package-list").scrollTop();
 
 				if (lthis.tempScrollTop < lthis.currentScrollTop ) {
-					console.log("Scroll down");
+					console.log("[PackageView] Scroll down");
 				}
 				else if (lthis.tempScrollTop > lthis.currentScrollTop ) {
-					console.log("Scroll up");
+					console.log("[PackageView] Scroll up");
 				}
 				lthis.tempScrollTop = lthis.currentScrollTop;
 			});
 			this.$('#number-all-packages').text(this.collection.length);
 			this.$('#next-button').click(function() {
-				console.log('Next');
 				if ( ( lthis.currentindex +20 ) >= lthis.collection.length) return false;;
 				lthis.currentindex = lthis.currentindex + 20;
 				lthis.render();
 			});			
 			this.$('#previous-button').click(function() {
-				console.log('Previous');
 				lthis.currentindex = lthis.currentindex - 20;
 				if (lthis.currentindex < 0) lthis.currentindex = 0;
 				lthis.render();			

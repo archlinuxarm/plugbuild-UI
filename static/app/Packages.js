@@ -15,13 +15,18 @@
 			v7_fail: null,
 			repo: null
         },
-        idAttribute: "package",
+        
         sync: function() {
         
         },
-		initialize: function(){
-
+		initialize: function(attributes,options){
+			var arch = attributes.arch;
+			var packagename = attributes.package;
 			
+			
+			
+			this.set({'id': arch + '/' + packagename });
+
         }
 	});
   

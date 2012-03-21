@@ -7,7 +7,7 @@
 (function($) {
 	window.Message = Backbone.Model.extend({
 		defaults: {
-			line: null
+			consoleline: null
         },
         sync: function() {
         

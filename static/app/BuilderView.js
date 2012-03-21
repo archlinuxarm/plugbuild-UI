@@ -24,6 +24,7 @@
 			dispatcher.on('builder:snapshot',function(snapshot) {
 				console.log('Builder view got builder state snapshot');
 				lthis.collection.reset(snapshot);
+				lthis.render();
 			});
 			dispatcher.on('builder:state',function(builder) {
 				console.log('Builder view got new state');
@@ -32,6 +33,7 @@
 					lthis.collection.remove(model);
     			}
 				lthis.collection.create(builder);
+				lthis.render();
 			});	
 		},
     
@@ -42,32 +44,46 @@
 			$(this.el).html(renderedContent);
 			var buildercache = document.createDocumentFragment();
 			this.collection.each(function(builder) {
-
+				var builderstate = builder.get('state');
+				var builderdetail = builder.get('package');
+				var buildername = builder.get('name');
+				var builderarch = builder.get('arch');
+				
+				
 				var li = document.createElement('li');
 				li.setAttribute('class','builder-node');
-
+				
+				switch (builderstate) {
+					case "disconnect":
+						builderdetail = "Disconnected";
+						break;
+					case "idle":
+						builderdetail = "Idle";
+					default:
+						break;
+				}
 
 				var state_element = document.createElement('span');
-				state_element.setAttribute('class','state ' + builder.get('state'));
+				state_element.setAttribute('class','state ' + builderstate);
 				li.appendChild(state_element);
 				
 								
 				var name_element = document.createElement('span');
-				var name = document.createTextNode(builder.get('name'));
+				var name = document.createTextNode(buildername);
 				name_element.appendChild(name);
 				name_element.setAttribute('class','name');
 				li.appendChild(name_element);
 
+
 				var detail_element = document.createElement('span');
-				var package = builder.get('package');
-				var detail = document.createTextNode(package ? package : "Idle");
+				var detail = document.createTextNode(builderdetail);
 				detail_element.appendChild(detail);
 				detail_element.setAttribute('class','detail');
 				li.appendChild(detail_element);
 				
 								
 				var arch_element = document.createElement('span');
-				var arch = document.createTextNode(builder.get('arch'));
+				var arch = document.createTextNode(builderarch);
 				arch_element.appendChild(arch);
 				arch_element.setAttribute('class','arch');
 				li.appendChild(arch_element);

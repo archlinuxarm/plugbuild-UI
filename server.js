@@ -49,7 +49,7 @@ builder.on('data', function(data) {
         switch (message.command) {
             case "echo":
                 console.log('Got successful echo: ' + message.session);
-                io.sockets.in(message.session).emit('echo',message);
+                io.sockets.in(message.session).emit('console',message);
                 break;
             case "dump":
                 var package_snapshot = message.dump; 
@@ -183,6 +183,12 @@ io.sockets.on('connection',function(socket){
     
     socket.on('echo',function(data){
         console.log(data);
+        sendToBuilder({
+            command : 'echo',
+            user    : socket.handshake.session.userCN,
+            session : socket.handshake.sessionID,
+            consoleline    : data.consoleline
+        });
     });
     
     socket.on('test',function(data){
