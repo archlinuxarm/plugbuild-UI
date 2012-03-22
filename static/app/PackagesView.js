@@ -10,86 +10,153 @@
 		initialize: function() {
 			_.bindAll(this, 'render');
 			this.template = _.template($('#packages-template').html());
-			this.collection	= new Packages();
-			this.collection.bind('reset', this.render);
-			this.collection.reset();
 
-			
-			this.currentindex = 0;
-			
-			this.tempScrollTop = 0;
-			this.currentScrollTop = 0;
+		  
 			
 			var lthis = this;
+			
+			Ext.define('Package', {
+        		extend: 'Ext.data.Model',
+         		fields: [
+		           		{name: 'package'},
+		           		{name: 'version'},
+		          	 	{name: 'v5_done'},
+		           		{name: 'v7_done'},
+		           		{name: 'v5_fail'},
+		           		{name: 'v7_fail'},
+		           		{name: 'repo'}
+        		]
+    		});
+    
+    
+    
 			dispatcher.on('package:snapshot',function(snapshot) {
-				console.log('Package view got snapshot');
-				lthis.collection.reset(snapshot);
 				lthis.render();
+				console.log('Package view got snapshot');
+				
+		    	lthis.store = Ext.create('Ext.data.ArrayStore', {
+        			id: 'store',
+        			pageSize: 50,
+        			// allow the grid to interact with the paging scroller by buffering
+        			buffered: true,
+        			// never purge any data, we prefetch all up front
+        			purgePageCount: 0,
+        			model: 'Package',
+       			 	proxy: {
+       			    	type: 'memory'
+       				}
+		    	});
+		    	console.log('Created extjs store, starting grid');
+			    lthis.grid = Ext.create('Ext.grid.Panel', {
+			        store: lthis.store,
+					verticalScroller: {
+			           xtype: 'paginggridscroller',
+			           activePrefetch: false
+			        },
+			        height:400,
+			        layout: 'fit',
+			        loadMask: true,
+			        disableSelection: false,
+			        invalidateScrollerOnRefresh: false,
+			        viewConfig: {
+			            trackOver: false
+			        },
+			        columns: [
+			            {
+			                text     : 'Package',
+			                flex     : 1,
+			                sortable : true,
+			                dataIndex: 'package'
+			            },
+			            {
+			                text     : 'Repo',
+			                width    : 75,
+			                sortable : true,
+			                dataIndex: 'repo'
+			            },
+			            {
+			                text     : 'v5 State',
+			                width    : 75,
+			                sortable : true,
+			               
+			                dataIndex: 'v5_done'
+			            },
+			            {
+			                text     : 'v7 State',
+			                width    : 75,
+			                sortable : true,
+			               
+			                dataIndex: 'v7_done'
+			            },
+			            {
+			                text     : 'v5 Fail',
+			                width    : 75,
+			                sortable : true,
+			                dataIndex: 'v5_fail'
+			          	},
+			            {
+			                text     : 'v7 Fail',
+			                width    : 75,
+			                sortable : true,
+			                dataIndex: 'v7_fail'
+			            }
+			        ],
+			   
+			        renderTo: 'package-list',
+			        viewConfig: {
+			            stripeRows: true
+			        }			
+				});
+				console.log('Created grid');
+				
+				var package_count = 0;
+				for (e in snapshot) { package_count++; }
+				var records = [];
+				var i = 0;
+			    for (; i < package_count; i++) {
+			        records.push(Ext.ModelManager.create(snapshot[i], 'Package'));
+			    }
+				lthis.store.cacheRecords(records);
+
+    			lthis.store.guaranteeRange(0, 49);
+    			console.log('Stored package snapshot in ExtJS store');
+			  	//Ext.EventManager.onWindowResize(lthis.grid.doLayout, lthis.grid);
+			  	$(window).resize(function() {
+  					lthis.resizeGrid();
+				});
+			  
+
 			});
 			dispatcher.on('package:update',function(package) {
 				console.log('Package view got update');
-				model = lthis.collection.get(package['package']);
-				if (model) {
-					lthis.collection.remove(model);
-    			}
-				lthis.collection.create(package);
-				lthis.render();
-			});			
-
+				
+				//model = lthis.collection.get(package['fqn']);
+				//if (model) {
+				//	lthis.collection.remove(model);
+    			//}
+				//lthis.collection.create(package);
+				//lthis.grid.updateRowCount();
+				//lthis.grid.render();
+			});
+			
+			dispatcher.on('console:resized', function () {
+				
+				lthis.resizeGrid();
+			});		
+						
+						
+		},
+		resizeGrid: function(grid) {
+			console.log('resizing grid');
+			
+			var content_height = this.$('#package-list').height();
+			this.grid.setHeight(content_height);
 		},
 		render: function() {
 			var renderedContent = this.template();
 			$(this.el).html(renderedContent);
 			console.log('Packages view rendering');
-			
-
-			var listCache = document.createDocumentFragment();
-			var lthis = this;	
-		
-			var pslice = this.collection.filter(function(package) {
-				var ind = lthis.collection.indexOf(package)
-				return ( ( ind >= lthis.currentindex ) && ( ind <= ( lthis.currentindex + 20) ) );
-			});
-
-			var pslicecollection = new Backbone.Collection(pslice);
-
-			pslicecollection.each(function(package) {
-				
-				var li = document.createElement('li');
-				li.setAttribute('class','package-item');
-				
-				var name = document.createTextNode(package.get('package'));
-				li.appendChild(name);
-				
-				var repo = document.createTextNode(package.get('repo'));
-				li.appendChild(repo);
-				listCache.appendChild(li);
-			});
-			this.$('#package-list').html(listCache.cloneNode(true));
-			this.$('#package-list').scroll(function() {
-				lthis.currentScrollTop = lthis.$("#package-list").scrollTop();
-
-				if (lthis.tempScrollTop < lthis.currentScrollTop ) {
-					console.log("[PackageView] Scroll down");
-				}
-				else if (lthis.tempScrollTop > lthis.currentScrollTop ) {
-					console.log("[PackageView] Scroll up");
-				}
-				lthis.tempScrollTop = lthis.currentScrollTop;
-			});
-			this.$('#number-all-packages').text(this.collection.length);
-			this.$('#next-button').click(function() {
-				if ( ( lthis.currentindex +20 ) >= lthis.collection.length) return false;;
-				lthis.currentindex = lthis.currentindex + 20;
-				lthis.render();
-			});			
-			this.$('#previous-button').click(function() {
-				lthis.currentindex = lthis.currentindex - 20;
-				if (lthis.currentindex < 0) lthis.currentindex = 0;
-				lthis.render();			
-			});
-			this.$('#current-index').text(this.currentindex);
-			
+			//var lthis = this;
 			return this;
 		}
 	});	

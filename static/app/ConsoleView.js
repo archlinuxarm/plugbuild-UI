@@ -18,15 +18,15 @@
 				console.log('Console view got message');
 				lthis.collection.create(message);
       			
-      				var li = document.createElement('li');
+      			var li = document.createElement('li');
 				li.setAttribute('class','console-line');
 				
 				var message = document.createTextNode(message.consoleline);
 				li.appendChild(message);
 		
       		
-      				lthis.$('#console-list').append(li);
-	      			lthis.$('#console-display').prop({ scrollTop: lthis.$('#console-display').prop("scrollHeight") });
+      			lthis.$('#console-list').append(li);
+	      		lthis.$('#console-display').prop({ scrollTop: lthis.$('#console-display').prop("scrollHeight") });
 			});
 		},
 		events: {
@@ -37,7 +37,7 @@
         	},
 		reveal: function () {
 			console.log("swap");
-			//this.$('#reveal-button').css({ WebkitTransform: 'rotate(' + 180 + 'deg)'});
+			var lthis = this;
 			if ($("#console-display").is(":hidden")) {
 				console.log("showing");
 				//$('#controlbutton').addClass('selected');
@@ -45,7 +45,8 @@
 					duration:500,
 					easing:"swing",
 					complete:function(){
-						//alert("complete!");
+						dispatcher.trigger('console:resized'); 
+						lthis.$('#reveal-button').css({ WebkitTransform: 'rotate(' + 180 + 'deg)'});
 					}
 				});
 			} else {
@@ -55,10 +56,12 @@
 					duration:500,
 					easing:"swing",
 					complete:function(){
-						//alert("complete!");
+						dispatcher.trigger('console:resized'); 
+						lthis.$('#reveal-button').css({ WebkitTransform: 'none'});
 					}
 				});
-			}            
+			} 
+			          
 			
 			
 			

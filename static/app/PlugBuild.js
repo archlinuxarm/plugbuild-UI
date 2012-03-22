@@ -15,7 +15,12 @@
 		initialize: function() {
 			this.dashboardView	= new DashboardView();
 			this.settingsView	= new SettingsView();
+			
+			
+			
 			this.packagesView	= new PackagesView();
+			var $contentArea = $('#content-area');
+			$contentArea.append(this.packagesView.render().el);
 			
 			this.builderView = new BuilderView();
 			var $sidebarContainer = $('#sidebar');
@@ -44,24 +49,24 @@
 			var lthis = this;
 			// done with setup of backbone stuff so we can setup the websocket now
 			this.socket = io.connect('https://archlinuxarm.org:7050', {secure: true});
-    			this.socket.on('connect', function () {
-        			dispatcher.trigger('console:message', { consoleline: '[Socket] Connected' });
-    			});
+    		this.socket.on('connect', function () {
+        		dispatcher.trigger('console:message', { consoleline: '[Socket] Connected' });
+    		});
 			this.socket.on('disconnect',function(){
-        			dispatcher.trigger('console:message', { consoleline: '[Socket] Closed' });
-    			});
-     			this.socket.on('init',function(data) { 
-        			dispatcher.trigger('console:message', { consoleline: "[Init] Received initial package and builder state snapshots" });
+        		dispatcher.trigger('console:message', { consoleline: '[Socket] Closed' });
+    		});
+     		this.socket.on('init',function(data) { 
+        		dispatcher.trigger('console:message', { consoleline: "[Init] Received initial package and builder state snapshots" });
         		
-        			//grab the username out of the response and ship it around
-        			var user = data.user;
-        			window.username = user;
-        			lthis.adminBar.username = user;
-        			lthis.adminBar.render();
+        	//grab the username out of the response and ship it around
+        	var user = data.user;
+     		window.username = user;
+     		lthis.adminBar.username = user;
+        	lthis.adminBar.render();
 
-				var builder_snapshot = [];
+			var builder_snapshot = [];
 				
-				for (var key in data.builders) {
+			for (var key in data.builders) {
         	        		var nbuilder = data.builders[key];
             	    			builder_snapshot.push(nbuilder);				
 				}
@@ -102,24 +107,6 @@
 	    			lthis.socket.emit('echo', data);
 	    		});
 	    		
-			},
-			dashboard: function() {
-				var $container = $('#content_area');
-				$container.empty();
-				$container.append(this.dashboardView.render().el);
-				dispatcher.trigger('page:dashboard');
-			},
-			settings: function() {
-				var $container = $('#content_area');
-				$container.empty();
-				$container.append(this.settingsView.render().el);
-				dispatcher.trigger('page:settings');
-			},
-			packages: function() {
-				var $container = $('#content_area');
-				$container.empty();
-				$container.append(this.packagesView.render().el);
-				dispatcher.trigger('page:packages');
 			}
 		});
 })(jQuery);

@@ -183,17 +183,17 @@ body {
 	-moz-user-select: text;
 	-o-user-select: text;
 	user-select: text;
-	height:20px;
-	margin-top:6px;
-	margin-bottom:0px;
-	border:none;
+	height:28px !important;
+	margin-top:7px !important;
+	margin-bottom:0px !important;
+	border:none !important;
     
-	outline: none;
+	outline: none !important;
 	position:relative;
 
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border-radius: 8px;
+	-webkit-border-radius: 8px !important;
+	-moz-border-radius: 8px !important;
+	border-radius: 8px !important;
 	
     
 	word-wrap: break-word;
@@ -216,6 +216,7 @@ body {
 
 #reveal-button {
 	width:36px;
+	padding-top:3px;
 }
 
 #console #console-toolbar {

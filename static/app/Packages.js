@@ -33,11 +33,19 @@
 	window.Packages = Backbone.Collection.extend({
 		initialize: function(){
 
+			this.sortby = "package";
+			var lthis = this;
+			dispatcher.on('packages:sort',function(sortby) {
+				if (sortby) {
+        			lthis.sortby = sortby[0];
+        		}
+        		return lthis.sortby;
+			});
 			
         },
 		model: Package,
 		comparator: function(package) {
-			return package.get("package");
+			return package.get(this.sortby);
 		}
 	});
 })(jQuery);
